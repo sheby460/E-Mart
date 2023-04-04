@@ -32,10 +32,17 @@ class EditProfileScreen extends StatelessWidget {
                         ).box.rounded.clip(Clip.antiAlias).make()
                       : data['imageUrl'] != '' &&
                               controller.profileImgPath.isEmpty
-                          ? Image.network(data['imageUrl'])
+                          ? Image.network(data['imageUrl'],
+                                  width: 100, fit: BoxFit.cover)
+                              .box
+                              .rounded
+                              .clip(Clip.antiAlias)
+                              .make()
                           : Image.file(
                               File(controller.profileImgPath.value),
-                            ),
+                              width: 100,
+                              fit: BoxFit.cover,
+                            ).box.rounded.clip(Clip.antiAlias).make(),
                   10.heightBox,
                   sharedButton(
                       color: redColor,
