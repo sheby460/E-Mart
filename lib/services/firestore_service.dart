@@ -6,7 +6,7 @@ class FireStoreServices {
   static getUser(uid) {
     return firestore
         .collection(usersCollection)
-        .where("uid", isEqualTo: uid)
+        .where("id", isEqualTo: uid)
         .snapshots();
   }
 }

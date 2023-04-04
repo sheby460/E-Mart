@@ -17,7 +17,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(ProfileEditController());
-
+    print(currentUser!.uid);
     return bgWidget(
         child: Scaffold(
       body: StreamBuilder(
@@ -54,17 +54,17 @@ class ProfileScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Row(
                       children: [
-                        data['imageUrl'] == '' ? Image.asset(
-                          imgProfile2,
-                          width: 100,
-                          fit: BoxFit.cover,
-                        ).box.rounded.clip(Clip.antiAlias).make():
-                         Image.asset(
-                          imgProfile2,
-                          width: 100,
-                          fit: BoxFit.cover,
-                        ).box.rounded.clip(Clip.antiAlias).make(),
-
+                        data['imageUrl'] == ''
+                            ? Image.asset(
+                                imgProfile2,
+                                width: 100,
+                                fit: BoxFit.cover,
+                              ).box.rounded.clip(Clip.antiAlias).make()
+                            : Image.asset(
+                                imgProfile2,
+                                width: 100,
+                                fit: BoxFit.cover,
+                              ).box.rounded.clip(Clip.antiAlias).make(),
                         10.heightBox,
                         Expanded(
                             child: Column(
