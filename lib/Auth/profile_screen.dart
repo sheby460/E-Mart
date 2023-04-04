@@ -22,17 +22,16 @@ class ProfileScreen extends StatelessWidget {
         child: Scaffold(
       body: StreamBuilder(
           stream: FireStoreServices.getUser(currentUser!.uid),
-          builder: (BuildContext context,
-              AsyncSnapshot<QuerySnapshot> snapshot) {
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {
               return const Center(
                 child: CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation(redColor),
                 ),
               );
-            }else {
+            } else {
               var data = snapshot.data!.docs[0];
-
               return SafeArea(
                   child: Column(
                 children: [
@@ -43,7 +42,10 @@ class ProfileScreen extends StatelessWidget {
                             alignment: Alignment.topRight,
                             child: Icon(Icons.edit, color: Colors.white))
                         .onTap(() {
-                      Get.to(() => const EditProfileScreen());
+                      controller.nameController.text = data['name'];
+                      controller.passController.text = data['password'];
+
+                      Get.to(() => EditProfileScreen(data: data));
                     }),
                   ),
 
@@ -52,18 +54,32 @@ class ProfileScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Row(
                       children: [
-                        Image.asset(
+                        data['imageUrl'] == '' ? Image.asset(
+                          imgProfile2,
+                          width: 100,
+                          fit: BoxFit.cover,
+                        ).box.rounded.clip(Clip.antiAlias).make():
+                         Image.asset(
                           imgProfile2,
                           width: 100,
                           fit: BoxFit.cover,
                         ).box.rounded.clip(Clip.antiAlias).make(),
+
                         10.heightBox,
                         Expanded(
                             child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            "${data['name']}".text.fontFamily(semibold).white.make(),
-                            "${data['email']}".text.fontFamily(bold).white.make(),
+                            "${data['name']}"
+                                .text
+                                .fontFamily(semibold)
+                                .white
+                                .make(),
+                            "${data['email']}"
+                                .text
+                                .fontFamily(bold)
+                                .white
+                                .make(),
                           ],
                         )),
                         OutlinedButton(
@@ -86,15 +102,15 @@ class ProfileScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       detailsCards(
-                          count: "00",
+                          count: data['cart_count'],
                           title: "in your cart",
                           width: context.screenWidth / 3.2),
                       detailsCards(
-                          count: "32",
+                          count: data['wishlist_count'],
                           title: "in your wishlist",
                           width: context.screenWidth / 3.2),
                       detailsCards(
-                          count: "675",
+                          count: data['order_count'],
                           title: "in your order",
                           width: context.screenWidth / 3.2),
                     ],
