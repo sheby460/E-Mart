@@ -24,15 +24,18 @@ class EditProfileScreen extends StatelessWidget {
               () => Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  controller.profileImgPath.isEmpty
+                  data['imageUrl'] == '' && controller.profileImgPath.isEmpty
                       ? Image.asset(
                           imgProfile2,
                           width: 100,
                           fit: BoxFit.cover,
                         ).box.rounded.clip(Clip.antiAlias).make()
-                      : Image.file(
-                          File(controller.profileImgPath.value),
-                        ),
+                      : data['imageUrl'] != '' &&
+                              controller.profileImgPath.isEmpty
+                          ? Image.network(data['imageUrl'])
+                          : Image.file(
+                              File(controller.profileImgPath.value),
+                            ),
                   10.heightBox,
                   sharedButton(
                       color: redColor,
