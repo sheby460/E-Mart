@@ -66,8 +66,8 @@ class EditProfileScreen extends StatelessWidget {
                                 await controller.uploadProfileImage();
                                 await controller.updateProfile(
                                     imgUrl: controller.profileImageLink,
-                                    name: controller.nameController,
-                                    password: controller.passController);
+                                    name: controller.nameController.text,
+                                    password: controller.passController.text);
                                 VxToast.show(context, msg: "profile updated");
                               },
                               color: redColor,
