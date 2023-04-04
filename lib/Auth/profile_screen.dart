@@ -43,7 +43,6 @@ class ProfileScreen extends StatelessWidget {
                             child: Icon(Icons.edit, color: Colors.white))
                         .onTap(() {
                       controller.nameController.text = data['name'];
-                      controller.passController.text = data['password'];
 
                       Get.to(() => EditProfileScreen(data: data));
                     }),

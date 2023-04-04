@@ -14,7 +14,8 @@ class ProfileEditController extends GetxController {
   var isloading = false.obs;
 
   var nameController = TextEditingController();
-  var passController = TextEditingController();
+  var oldpassController = TextEditingController();
+  var newpassController = TextEditingController();
 
   changeImage(context) async {
     try {
@@ -38,11 +39,8 @@ class ProfileEditController extends GetxController {
 
   updateProfile({name, password, imgUrl}) async {
     var store = firestore.collection(usersCollection).doc(currentUser!.uid);
-    await store.set({
-      'name': name,
-      'password': password,
-      'imageUrl': imgUrl
-    }, SetOptions(merge: true));
+    await store.set({'name': name, 'password': password, 'imageUrl': imgUrl},
+        SetOptions(merge: true));
 
     isloading(false);
   }

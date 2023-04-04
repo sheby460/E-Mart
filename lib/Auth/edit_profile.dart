@@ -58,10 +58,17 @@ class EditProfileScreen extends StatelessWidget {
                       hint: nameHint,
                       title: name,
                       isPass: false),
+                      10.heightBox,
                   customTextField(
-                      controller: controller.passController,
+                      controller: controller.oldpassController,
                       hint: passwordHint,
-                      title: password,
+                      title: oldpass,
+                      isPass: true),
+                      10.heightBox,
+                      customTextField(
+                      controller: controller.oldpassController,
+                      hint: passwordHint,
+                      title: newpass ,
                       isPass: true),
                   20.heightBox,
                   controller.isloading.value
@@ -71,13 +78,20 @@ class EditProfileScreen extends StatelessWidget {
                       : SizedBox(
                           child: sharedButton(
                               onPress: () async {
+
+
                                 controller.isloading(true);
+
+                                //if images is not selected
+                                if(controller.profileImgPath.value.isNotEmpty){
+                                  
+                                }
 
                                 await controller.uploadProfileImage();
                                 await controller.updateProfile(
                                     imgUrl: controller.profileImageLink,
                                     name: controller.nameController.text,
-                                    password: controller.passController.text);
+                                    password: controller.newpassController.text);
                                 VxToast.show(context, msg: "profile updated");
                               },
                               color: redColor,
