@@ -54,22 +54,25 @@ class EditProfileScreen extends StatelessWidget {
                   const Divider(),
                   20.heightBox,
                   customTextField(
-                      controller: controller.nameController,
-                      hint: nameHint,
-                      title: name,
-                      isPass: false),
-                      10.heightBox,
+                    controller: controller.nameController,
+                    hint: nameHint,
+                    title: name,
+                    isPass: false,
+                  ),
+                  10.heightBox,
                   customTextField(
-                      controller: controller.oldpassController,
-                      hint: passwordHint,
-                      title: oldpass,
-                      isPass: true),
-                      10.heightBox,
-                      customTextField(
-                      controller: controller.oldpassController,
-                      hint: passwordHint,
-                      title: newpass ,
-                      isPass: true),
+                    controller: controller.oldpassController,
+                    hint: passwordHint,
+                    title: oldpass,
+                    isPass: true,
+                  ),
+                  10.heightBox,
+                  customTextField(
+                    controller: controller.newpassController,
+                    hint: passwordHint,
+                    title: newpass,
+                    isPass: true,
+                  ),
                   20.heightBox,
                   controller.isloading.value
                       ? const CircularProgressIndicator(
@@ -78,21 +81,37 @@ class EditProfileScreen extends StatelessWidget {
                       : SizedBox(
                           child: sharedButton(
                               onPress: () async {
-
-
                                 controller.isloading(true);
 
                                 //if images is not selected
-                                if(controller.profileImgPath.value.isNotEmpty){
-                                  
+                                if (controller
+                                    .profileImgPath.value.isNotEmpty) {
+                                  await controller.uploadProfileImage();
+                                } else {
+                                  controller.profileImageLink =
+                                      data['imageUrl'];
                                 }
-
-                                await controller.uploadProfileImage();
-                                await controller.updateProfile(
-                                    imgUrl: controller.profileImageLink,
-                                    name: controller.nameController.text,
-                                    password: controller.newpassController.text);
-                                VxToast.show(context, msg: "profile updated");
+                                //old pass checker
+                                if (data['password'] ==
+                                    controller.oldpassController.text) {
+                                     
+                                     await controller.changeAuthPassword(
+                                     email: data['email'],
+                                     password: controller.oldpassController.text,
+                                     newpassord: controller.newpassController.text,
+                                     );
+                                    
+                                  await controller.uploadProfileImage();
+                                  await controller.updateProfile(
+                                      imgUrl: controller.profileImageLink,
+                                      name: controller.nameController.text,
+                                      password:
+                                          controller.newpassController.text);
+                                  VxToast.show(context, msg: "profile updated");
+                                } else {
+                                  VxToast.show(context, msg: "wrong password");
+                                  controller.isloading(false);
+                                }
                               },
                               color: redColor,
                               textColor: whiteColor,
