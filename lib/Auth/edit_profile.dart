@@ -24,15 +24,25 @@ class EditProfileScreen extends StatelessWidget {
               () => Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  controller.profileImgPath.isEmpty
+                  data['imageUrl'] == '' && controller.profileImgPath.isEmpty
                       ? Image.asset(
                           imgProfile2,
                           width: 100,
                           fit: BoxFit.cover,
                         ).box.rounded.clip(Clip.antiAlias).make()
-                      : Image.file(
-                          File(controller.profileImgPath.value),
-                        ),
+                      : data['imageUrl'] != '' &&
+                              controller.profileImgPath.isEmpty
+                          ? Image.network(data['imageUrl'],
+                                  width: 100, fit: BoxFit.cover)
+                              .box
+                              .rounded
+                              .clip(Clip.antiAlias)
+                              .make()
+                          : Image.file(
+                              File(controller.profileImgPath.value),
+                              width: 100,
+                              fit: BoxFit.cover,
+                            ).box.rounded.clip(Clip.antiAlias).make(),
                   10.heightBox,
                   sharedButton(
                       color: redColor,
@@ -44,15 +54,25 @@ class EditProfileScreen extends StatelessWidget {
                   const Divider(),
                   20.heightBox,
                   customTextField(
-                      controller: controller.nameController,
-                      hint: nameHint,
-                      title: name,
-                      isPass: false),
+                    controller: controller.nameController,
+                    hint: nameHint,
+                    title: name,
+                    isPass: false,
+                  ),
+                  10.heightBox,
                   customTextField(
-                      controller: controller.passController,
-                      hint: passwordHint,
-                      title: password,
-                      isPass: true),
+                    controller: controller.oldpassController,
+                    hint: passwordHint,
+                    title: oldpass,
+                    isPass: true,
+                  ),
+                  10.heightBox,
+                  customTextField(
+                    controller: controller.newpassController,
+                    hint: passwordHint,
+                    title: newpass,
+                    isPass: true,
+                  ),
                   20.heightBox,
                   controller.isloading.value
                       ? const CircularProgressIndicator(
@@ -63,12 +83,35 @@ class EditProfileScreen extends StatelessWidget {
                               onPress: () async {
                                 controller.isloading(true);
 
-                                await controller.uploadProfileImage();
-                                await controller.updateProfile(
-                                    imgUrl: controller.profileImageLink,
-                                    name: controller.nameController.text,
-                                    password: controller.passController.text);
-                                VxToast.show(context, msg: "profile updated");
+                                //if images is not selected
+                                if (controller
+                                    .profileImgPath.value.isNotEmpty) {
+                                  await controller.uploadProfileImage();
+                                } else {
+                                  controller.profileImageLink =
+                                      data['imageUrl'];
+                                }
+                                //old pass checker
+                                if (data['password'] ==
+                                    controller.oldpassController.text) {
+                                     
+                                     await controller.changeAuthPassword(
+                                     email: data['email'],
+                                     password: controller.oldpassController.text,
+                                     newpassord: controller.newpassController.text,
+                                     );
+                                    
+                                  await controller.uploadProfileImage();
+                                  await controller.updateProfile(
+                                      imgUrl: controller.profileImageLink,
+                                      name: controller.nameController.text,
+                                      password:
+                                          controller.newpassController.text);
+                                  VxToast.show(context, msg: "profile updated");
+                                } else {
+                                  VxToast.show(context, msg: "wrong password");
+                                  controller.isloading(false);
+                                }
                               },
                               color: redColor,
                               textColor: whiteColor,

@@ -36,4 +36,4 @@ const tShirt = "T-shirt", girlsDress ="Girls Dresses";
 const video="Video", review="Reviews", salesPolicy="Sales Policy",
     returnPolicy="Returns Policy" ,supportPolicy="Support Policy", productyoumaylike= "Product you may also like";
 
-const wishlist="My wishlist", order="My orders", message="Messages";
+const wishlist="My wishlist", order="My orders", message="Messages",oldpass="Old password",newpass="New password";
