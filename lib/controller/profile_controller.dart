@@ -32,7 +32,7 @@ class ProfileEditController extends GetxController {
     var destination = 'image/${currentUser!.uid}/$filename';
     Reference ref = FirebaseStorage.instance.ref().child(destination);
     await ref.putFile(File(profileImgPath.value));
-    profileImageLink = ref.getDownloadURL() as String;
+    profileImageLink = await ref.getDownloadURL();
     isloading(false);
   }
 

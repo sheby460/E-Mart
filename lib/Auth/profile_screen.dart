@@ -31,7 +31,9 @@ class ProfileScreen extends StatelessWidget {
                 ),
               );
             } else {
+             
               var data = snapshot.data!.docs[0];
+              print(snapshot.data);
               return SafeArea(
                   child: Column(
                 children: [
@@ -106,7 +108,7 @@ class ProfileScreen extends StatelessWidget {
                           title: "in your cart",
                           width: context.screenWidth / 3.2),
                       detailsCards(
-                          count: data['wishlist_count'],
+                          count: data['wishlists_count'],
                           title: "in your wishlist",
                           width: context.screenWidth / 3.2),
                       detailsCards(
